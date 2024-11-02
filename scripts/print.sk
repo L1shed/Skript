@@ -1,1 +1,2 @@
-send "Hello, world!"
+set {a} to "Hello, world!"
+send {a}

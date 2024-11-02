@@ -1,4 +1,15 @@
 object Parser {
+    fun parseLine(line: String) {
+        if (line.isEmpty()) return
+        for ((pattern, action) in matches) {
+            val abstract = Matcher.abstract(line, pattern)
+            if (!abstract.first) continue
+
+            action(abstract.second)
+            return
+        }
+    }
+
     fun parseTypes(pattern: String): List<String> {
         val types = mutableListOf<String>()
         var start: Int? = null

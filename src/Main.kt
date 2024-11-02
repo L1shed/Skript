@@ -3,17 +3,15 @@ import type.Variable
 import java.io.File
 
 fun main() {
+    run(File("./scripts/print.sk"))
+
+    Thread.sleep(1000000)
+
     while (true) {
         print(">> ")
         val line = readLine() ?: continue
 
-
-        for ((pattern, action) in matches) {
-            val abstract = Matcher.abstract(line, pattern)
-            if (!abstract.first) continue
-
-            action(abstract.second)
-        }
+        Parser.parseLine(line)
     }
 }
 
@@ -28,7 +26,7 @@ val matches = mapOf<String, (args: Array<Object>) -> Unit >(
 
     "set %variable% to %object%" to { (obj1, obj2) ->
         variables[(obj1 as Variable).ref] = obj2
-        println("DEBUG: Set $obj1 to $obj2")
+//        println("DEBUG: Set $obj1 to $obj2")
     },
 
     "add %number% to %variable%" to { (num, obj) ->
@@ -41,13 +39,12 @@ val matches = mapOf<String, (args: Array<Object>) -> Unit >(
 )
 
 fun run(file: File) {
-    file.forEachLine {
-        for ((pattern, action) in matches) {
-            val abstract = Matcher.abstract(it, pattern)
-            if (!abstract.first) continue
+    // TODO: Tabulated conds handling (=1)
+    if (file.extension != "sk")
+        println("rename file to .sk")
 
-            action(abstract.second)
-        }
+    file.forEachLine {
+        Parser.parseLine(it)
     }
 }
 

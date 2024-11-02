@@ -33,7 +33,7 @@ object Matcher {
                 val value =
                     if (matchType == MatchType.BRACES) {
                         if (neededType == "variable") {
-                            Variable(String("Cool"), match)
+                            Variable(String(match), match)
                         } else {
                             variables[match] ?: String("<none>")
                         }
@@ -42,23 +42,23 @@ object Matcher {
                     }
 
 
-                val typeStr =
-                    when (matchType) {
-                        MatchType.BRACES -> neededType
-                        MatchType.QUOTES -> "string"
-                        else -> throw Exception("Invalid match type")
-                    }
+//                val typeStr =
+//                    when (matchType) {
+//                        MatchType.BRACES -> neededType
+//                        MatchType.QUOTES -> "string"
+//                        else -> throw Exception("Invalid match type")
+//                    }
 
-                abstract = abstract.replace(string.substring(start, i + 1), "%$typeStr%")
+                abstract = abstract.replace(string.substring(start, i + 1), "%$neededType%")
 
 
                 matches.add(
                     value
                 )
 
-                if (typeStr != neededType) {
-                    return Pair(false, arrayOf())
-                }
+//                if (typeStr != neededType) {
+//                    return Pair(false, arrayOf())
+//                }
 
                 start = null
                 matchType = null
@@ -77,8 +77,8 @@ object Matcher {
             matched = when (type) {
                 "object" -> true
                 "string" -> matches[i] is type.String
-                "number" -> matches[i] is type.Number
-                "variable" -> true
+                "number" -> matches[i] is Number
+                "variable" -> matches[i] is Variable
                 else -> throw Exception("Invalid type")
             }
         }
