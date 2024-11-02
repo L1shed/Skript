@@ -8,8 +8,8 @@ enum class Types {
     STRING,
 }
 
-open class Object(
-    val value: Any,
+open class Object<T>(
+    var value: T,
 ) {
     override fun toString(): String {
         return value.toString()
@@ -18,13 +18,13 @@ open class Object(
 
 class String(
     value: String
-) : Object(value)
+) : Object<String>(value)
 
 class Number(
-    value: Number
-) : Object(value)
+    value: Float
+) : Object<Float>(value)
 
 class Variable(
-    value: Object,
+    value: Object<*>,
     val ref: String
-) : Object(value)
+) : Object<Object<*>>(value)

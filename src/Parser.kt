@@ -1,8 +1,8 @@
 object Parser {
     fun parseLine(line: String) {
-        if (line.isEmpty()) return
+        if (line.isBlank()) return
         for ((pattern, action) in matches) {
-            val abstract = Matcher.abstract(line, pattern)
+            val abstract = Matcher.abstract(line.trimEnd(), pattern)
             if (!abstract.first) continue
 
             action(abstract.second)
